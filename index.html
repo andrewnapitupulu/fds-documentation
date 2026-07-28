@@ -1,0 +1,1125 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>FDS Typography Design Documentation</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            fds: {
+              canvas: '#070A0C',
+              sidebar: '#0B0D0F',
+              surface: '#11161A',
+              surface2: '#171D22',
+              active: '#2A536F',
+              accent: '#73BAB4',
+              ink: '#EAF0F3',
+              muted: '#98A2A8',
+              line: 'rgba(255,255,255,.10)',
+              blue: '#0F62FE',
+              danger: '#EF4444',
+              warning: '#F59E0B',
+              success: '#22C55E',
+              purple: '#8B5CF6'
+            }
+          },
+          fontFamily: {
+            fds: ['"JetBrains Mono"', 'ui-monospace', 'SFMono-Regular', 'Menlo', 'Monaco', 'Consolas', 'monospace']
+          },
+          boxShadow: {
+            panel: '0 18px 55px rgba(0,0,0,.28)',
+            insetsoft: 'inset 0 0 0 1px rgba(255,255,255,.04)'
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    html { scroll-behavior: smooth; }
+    body { font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; }
+    ::selection { background: rgba(115,186,180,.3); color: white; }
+    .grid-bg {
+      background-image:
+        linear-gradient(rgba(255,255,255,.022) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.022) 1px, transparent 1px);
+      background-size: 28px 28px;
+    }
+    .scrollbar::-webkit-scrollbar { width: 8px; height: 8px; }
+    .scrollbar::-webkit-scrollbar-track { background: transparent; }
+    .scrollbar::-webkit-scrollbar-thumb { background: rgba(255,255,255,.13); border-radius: 999px; }
+    .nav-link.active { background: rgba(115,186,180,.12); color: #73BAB4; }
+    .tab-button.active { background: #2A536F; color: white; }
+    .component-row[hidden] { display: none; }
+    .preview-sidebar { transition: width 220ms ease; }
+    .preview-sidebar.is-collapsed { width: 72px !important; }
+    .preview-sidebar.is-collapsed .collapse-copy,
+    .preview-sidebar.is-collapsed .collapse-submenu,
+    .preview-sidebar.is-collapsed .collapse-chevron {
+      display: none;
+    }
+    .preview-sidebar.is-collapsed .collapse-center {
+      justify-content: center;
+      padding-left: .75rem;
+      padding-right: .75rem;
+    }
+    .code-line::before {
+      content: attr(data-line);
+      display: inline-block;
+      width: 2.25rem;
+      margin-right: .75rem;
+      color: #64748b;
+      text-align: right;
+      user-select: none;
+    }
+  </style>
+</head>
+
+<body class="min-h-screen bg-fds-canvas text-fds-ink">
+  <div class="grid-bg min-h-screen">
+    <!-- Top header -->
+    <header class="sticky top-0 z-50 border-b border-white/10 bg-fds-canvas/90 backdrop-blur-xl">
+      <div class="mx-auto flex max-w-[1680px] items-center justify-between gap-4 px-5 py-4 lg:px-8">
+        <div class="flex min-w-0 items-center gap-3">
+          <div class="flex size-10 shrink-0 items-center justify-center rounded-xl border border-fds-accent/30 bg-fds-accent/10 text-fds-accent">
+            <svg viewBox="0 0 24 24" class="size-5" fill="none" stroke="currentColor" stroke-width="1.8">
+              <path d="M12 3 4.5 6v5.1c0 4.6 3 7.9 7.5 9.9 4.5-2 7.5-5.3 7.5-9.9V6L12 3Z"/>
+              <path d="m9.7 12 1.5 1.5 3.3-3.5"/>
+            </svg>
+          </div>
+          <div class="min-w-0">
+            <p class="truncate text-sm/5 font-semibold tracking-tight text-white">Fraud Detection System</p>
+            <p class="truncate text-xs/4 text-fds-accent">Typography Design Documentation</p>
+          </div>
+        </div>
+        <div class="hidden items-center gap-2 md:flex">
+          <span class="rounded-full border border-white/10 bg-white/5 px-3 py-1.5 text-xs/4 text-slate-300">Tailwind CSS</span>
+          <span class="rounded-full border border-fds-accent/25 bg-fds-accent/10 px-3 py-1.5 text-xs/4 text-fds-accent">JetBrains Mono</span>
+          <span class="rounded-full border border-white/10 bg-white/5 px-3 py-1.5 text-xs/4 text-slate-300">Desktop-first</span>
+        </div>
+      </div>
+    </header>
+
+    <main class="mx-auto grid max-w-[1680px] grid-cols-1 gap-8 px-5 py-8 lg:grid-cols-[248px_minmax(0,1fr)] lg:px-8">
+      <!-- Left navigation -->
+      <aside class="hidden lg:block">
+        <div class="sticky top-24 max-h-[calc(100vh-7rem)] overflow-y-auto rounded-2xl border border-white/10 bg-fds-surface/80 p-4 shadow-panel backdrop-blur scrollbar">
+          <p class="px-3 pb-3 text-xs/4 font-semibold uppercase tracking-wider text-fds-accent">Documentation</p>
+          <nav id="docNav" class="space-y-1 text-xs/5">
+            <a href="#overview" class="nav-link block rounded-lg px-3 py-2 text-slate-300 hover:bg-white/5 hover:text-white">Overview</a>
+            <a href="#principles" class="nav-link block rounded-lg px-3 py-2 text-slate-300 hover:bg-white/5 hover:text-white">Principles</a>
+            <a href="#scale" class="nav-link block rounded-lg px-3 py-2 text-slate-300 hover:bg-white/5 hover:text-white">Core scale</a>
+            <a href="#sidebar" class="nav-link block rounded-lg px-3 py-2 text-slate-300 hover:bg-white/5 hover:text-white">Sidebar</a>
+            <a href="#components" class="nav-link block rounded-lg px-3 py-2 text-slate-300 hover:bg-white/5 hover:text-white">Component matrix</a>
+            <a href="#preview-list" class="nav-link block rounded-lg px-3 py-2 text-slate-300 hover:bg-white/5 hover:text-white">List page</a>
+            <a href="#preview-detail" class="nav-link block rounded-lg px-3 py-2 text-slate-300 hover:bg-white/5 hover:text-white">Detail page</a>
+            <a href="#preview-form" class="nav-link block rounded-lg px-3 py-2 text-slate-300 hover:bg-white/5 hover:text-white">Form & settings</a>
+            <a href="#preview-workflow" class="nav-link block rounded-lg px-3 py-2 text-slate-300 hover:bg-white/5 hover:text-white">Workflow & activity</a>
+            <a href="#coverage" class="nav-link block rounded-lg px-3 py-2 text-slate-300 hover:bg-white/5 hover:text-white">Screen coverage</a>
+            <a href="#implementation" class="nav-link block rounded-lg px-3 py-2 text-slate-300 hover:bg-white/5 hover:text-white">Implementation</a>
+          </nav>
+        </div>
+      </aside>
+
+      <div class="min-w-0 space-y-8">
+        <!-- Overview -->
+        <section id="overview" class="overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-br from-fds-surface2 to-fds-sidebar shadow-panel">
+          <div class="grid gap-8 p-6 sm:p-8 xl:grid-cols-[1.25fr_.75fr]">
+            <div>
+              <span class="inline-flex rounded-full border border-fds-accent/25 bg-fds-accent/10 px-3 py-1.5 text-xs/4 font-semibold text-fds-accent">FDS DESIGN SYSTEM · SINGLE SOURCE OF TRUTH</span>
+              <h1 class="mt-5 max-w-5xl text-3xl/10 font-bold tracking-tight text-white sm:text-4xl/10">
+                Typography system untuk seluruh aplikasi Fraud Detection System
+              </h1>
+              <p class="mt-4 max-w-4xl text-sm/6 text-slate-300">
+                Dokumentasi ini menggabungkan sidebar dan seluruh pola tipografi yang muncul pada halaman Transactions, Transaction Detail,
+                Rule Configuration, Approval, Danger Zone, Role Management, Case Management, Timeout Configuration, Activity Log, dan Reports.
+                Komponen yang sama hanya dijelaskan satu kali agar implementasi konsisten.
+              </p>
+              <div class="mt-6 flex flex-wrap gap-3">
+                <div class="rounded-xl border border-white/10 bg-black/20 px-4 py-3">
+                  <p class="text-xs/4 text-slate-400">Typeface</p>
+                  <p class="mt-1 text-sm/5 font-semibold text-white">JetBrains Mono</p>
+                </div>
+                <div class="rounded-xl border border-white/10 bg-black/20 px-4 py-3">
+                  <p class="text-xs/4 text-slate-400">Core sizes</p>
+                  <p class="mt-1 text-sm/5 font-semibold text-white">12 · 14 · 18 · 20 · 24 · 30 · 36</p>
+                </div>
+                <div class="rounded-xl border border-white/10 bg-black/20 px-4 py-3">
+                  <p class="text-xs/4 text-slate-400">Font weights</p>
+                  <p class="mt-1 text-sm/5 font-semibold text-white">400 · 500 · 600 · 700</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-2 gap-3 self-end">
+              <div class="rounded-2xl border border-white/10 bg-black/20 p-4">
+                <p class="text-xs/4 text-slate-400">Page title</p>
+                <p class="mt-3 text-3xl/9 font-bold text-white">Aa</p>
+                <p class="mt-2 text-xs/4 font-semibold text-fds-accent">text-3xl/9</p>
+              </div>
+              <div class="rounded-2xl border border-white/10 bg-black/20 p-4">
+                <p class="text-xs/4 text-slate-400">Section title</p>
+                <p class="mt-3 text-xl/7 font-semibold text-white">Aa</p>
+                <p class="mt-2 text-xs/4 font-semibold text-fds-accent">text-xl/7</p>
+              </div>
+              <div class="rounded-2xl border border-white/10 bg-black/20 p-4">
+                <p class="text-xs/4 text-slate-400">Body & control</p>
+                <p class="mt-3 text-sm/5 font-medium text-white">Aa</p>
+                <p class="mt-2 text-xs/4 font-semibold text-fds-accent">text-sm/5</p>
+              </div>
+              <div class="rounded-2xl border border-white/10 bg-black/20 p-4">
+                <p class="text-xs/4 text-slate-400">Compact data</p>
+                <p class="mt-3 text-xs/5 font-medium text-white">Aa</p>
+                <p class="mt-2 text-xs/4 font-semibold text-fds-accent">text-xs/5</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Principles -->
+        <section id="principles" class="grid gap-4 xl:grid-cols-4">
+          <article class="rounded-2xl border border-white/10 bg-fds-surface/80 p-5 shadow-panel">
+            <span class="flex size-9 items-center justify-center rounded-lg bg-fds-accent/10 text-sm font-bold text-fds-accent">01</span>
+            <h2 class="mt-4 text-lg/7 font-semibold text-white">Minimum 12 px</h2>
+            <p class="mt-2 text-xs/5 text-slate-400">Caption, badge, metadata, dan table header menggunakan minimum <code class="text-white">text-xs</code>.</p>
+          </article>
+          <article class="rounded-2xl border border-white/10 bg-fds-surface/80 p-5 shadow-panel">
+            <span class="flex size-9 items-center justify-center rounded-lg bg-fds-accent/10 text-sm font-bold text-fds-accent">02</span>
+            <h2 class="mt-4 text-lg/7 font-semibold text-white">Tidak berubah saat aktif</h2>
+            <p class="mt-2 text-xs/5 text-slate-400">State aktif dibedakan dengan warna, weight, underline, badge, atau surface—bukan ukuran font.</p>
+          </article>
+          <article class="rounded-2xl border border-white/10 bg-fds-surface/80 p-5 shadow-panel">
+            <span class="flex size-9 items-center justify-center rounded-lg bg-fds-accent/10 text-sm font-bold text-fds-accent">03</span>
+            <h2 class="mt-4 text-lg/7 font-semibold text-white">Numerik tetap sejajar</h2>
+            <p class="mt-2 text-xs/5 text-slate-400">Nominal, score, SLA, timestamp, dan metrics menggunakan <code class="text-white">tabular-nums</code>.</p>
+          </article>
+          <article class="rounded-2xl border border-white/10 bg-fds-surface/80 p-5 shadow-panel">
+            <span class="flex size-9 items-center justify-center rounded-lg bg-fds-accent/10 text-sm font-bold text-fds-accent">04</span>
+            <h2 class="mt-4 text-lg/7 font-semibold text-white">Semantic consistency</h2>
+            <p class="mt-2 text-xs/5 text-slate-400">Komponen dengan fungsi sama selalu memakai token yang sama di semua halaman.</p>
+          </article>
+        </section>
+
+        <!-- Core scale -->
+        <section id="scale" class="rounded-3xl border border-white/10 bg-fds-surface/80 p-5 shadow-panel sm:p-6">
+          <div>
+            <p class="text-xs/4 font-semibold uppercase tracking-wider text-fds-accent">Core scale</p>
+            <h2 class="mt-2 text-xl/7 font-semibold text-white">Skala tipografi utama</h2>
+            <p class="mt-2 text-sm/6 text-slate-400">Gunakan tujuh level berikut. Hindari menambahkan ukuran 13, 15, 17, atau 22 px tanpa kebutuhan khusus.</p>
+          </div>
+
+          <div class="mt-6 overflow-x-auto scrollbar">
+            <table class="min-w-[980px] w-full text-left">
+              <thead>
+                <tr class="border-b border-white/10 text-xs/4 font-semibold uppercase tracking-wider text-slate-400">
+                  <th class="px-4 py-3">Semantic token</th>
+                  <th class="px-4 py-3">Tailwind</th>
+                  <th class="px-4 py-3">Rendered</th>
+                  <th class="px-4 py-3">Weight</th>
+                  <th class="px-4 py-3">Specimen</th>
+                  <th class="px-4 py-3">Primary usage</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-white/10">
+                <tr>
+                  <td class="px-4 py-4 text-xs/5 font-semibold text-white">display-lg</td>
+                  <td class="px-4 py-4"><code class="text-xs/4 text-fds-accent">text-4xl/10</code></td>
+                  <td class="px-4 py-4 text-xs/5 text-slate-300">36 / 40 px</td>
+                  <td class="px-4 py-4 text-xs/5 text-slate-300">700</td>
+                  <td class="px-4 py-4 text-4xl/10 font-bold tabular-nums text-white">95 / 100</td>
+                  <td class="px-4 py-4 text-xs/5 text-slate-400">Entity ID besar, total utama, report hero metric</td>
+                </tr>
+                <tr>
+                  <td class="px-4 py-4 text-xs/5 font-semibold text-white">heading-page</td>
+                  <td class="px-4 py-4"><code class="text-xs/4 text-fds-accent">text-3xl/9</code></td>
+                  <td class="px-4 py-4 text-xs/5 text-slate-300">30 / 36 px</td>
+                  <td class="px-4 py-4 text-xs/5 text-slate-300">700</td>
+                  <td class="px-4 py-4 text-3xl/9 font-bold text-white">Transactions</td>
+                  <td class="px-4 py-4 text-xs/5 text-slate-400">Page title umum</td>
+                </tr>
+                <tr>
+                  <td class="px-4 py-4 text-xs/5 font-semibold text-white">heading-dialog</td>
+                  <td class="px-4 py-4"><code class="text-xs/4 text-fds-accent">text-2xl/8</code></td>
+                  <td class="px-4 py-4 text-xs/5 text-slate-300">24 / 32 px</td>
+                  <td class="px-4 py-4 text-xs/5 text-slate-300">700</td>
+                  <td class="px-4 py-4 text-2xl/8 font-bold text-white">Add New Role</td>
+                  <td class="px-4 py-4 text-xs/5 text-slate-400">Page title compact, modal title, form title</td>
+                </tr>
+                <tr>
+                  <td class="px-4 py-4 text-xs/5 font-semibold text-white">heading-section</td>
+                  <td class="px-4 py-4"><code class="text-xs/4 text-fds-accent">text-xl/7</code></td>
+                  <td class="px-4 py-4 text-xs/5 text-slate-300">20 / 28 px</td>
+                  <td class="px-4 py-4 text-xs/5 text-slate-300">600</td>
+                  <td class="px-4 py-4 text-xl/7 font-semibold text-white">Score Contribution</td>
+                  <td class="px-4 py-4 text-xs/5 text-slate-400">Section title, major card title</td>
+                </tr>
+                <tr>
+                  <td class="px-4 py-4 text-xs/5 font-semibold text-white">heading-card</td>
+                  <td class="px-4 py-4"><code class="text-xs/4 text-fds-accent">text-lg/7</code></td>
+                  <td class="px-4 py-4 text-xs/5 text-slate-300">18 / 28 px</td>
+                  <td class="px-4 py-4 text-xs/5 text-slate-300">600</td>
+                  <td class="px-4 py-4 text-lg/7 font-semibold text-white">Triggered Transaction</td>
+                  <td class="px-4 py-4 text-xs/5 text-slate-400">Card title, timeline title, settings block</td>
+                </tr>
+                <tr>
+                  <td class="px-4 py-4 text-xs/5 font-semibold text-white">body-control</td>
+                  <td class="px-4 py-4"><code class="text-xs/4 text-fds-accent">text-sm/5</code></td>
+                  <td class="px-4 py-4 text-xs/5 text-slate-300">14 / 20 px</td>
+                  <td class="px-4 py-4 text-xs/5 text-slate-300">400–600</td>
+                  <td class="px-4 py-4 text-sm/5 font-medium text-white">View Details</td>
+                  <td class="px-4 py-4 text-xs/5 text-slate-400">Body, button, input, tab, primary table cell</td>
+                </tr>
+                <tr>
+                  <td class="px-4 py-4 text-xs/5 font-semibold text-white">compact-meta</td>
+                  <td class="px-4 py-4"><code class="text-xs/4 text-fds-accent">text-xs/4 atau text-xs/5</code></td>
+                  <td class="px-4 py-4 text-xs/5 text-slate-300">12 / 16–20 px</td>
+                  <td class="px-4 py-4 text-xs/5 text-slate-300">400–600</td>
+                  <td class="px-4 py-4 text-xs/5 font-medium text-white">25 Nov 2025, 10:32 WIB</td>
+                  <td class="px-4 py-4 text-xs/5 text-slate-400">Metadata, badge, table header, helper text</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- Sidebar documentation -->
+        <section id="sidebar" class="rounded-3xl border border-white/10 bg-fds-surface/80 p-5 shadow-panel sm:p-6">
+          <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+            <div>
+              <p class="text-xs/4 font-semibold uppercase tracking-wider text-fds-accent">Sidebar</p>
+              <h2 class="mt-2 text-xl/7 font-semibold text-white">Expanded dan collapsed states</h2>
+            </div>
+            <div class="inline-flex self-start rounded-xl border border-white/10 bg-black/20 p-1">
+              <button id="sidebarExpanded" class="tab-button active rounded-lg px-4 py-2 text-xs/4 font-semibold text-slate-400">Expanded</button>
+              <button id="sidebarCollapsed" class="tab-button rounded-lg px-4 py-2 text-xs/4 font-semibold text-slate-400">Collapsed</button>
+            </div>
+          </div>
+
+          <div class="mt-6 overflow-x-auto rounded-2xl border border-white/10 bg-[#05080A] p-5 scrollbar">
+            <div class="flex min-w-[780px] items-start gap-6">
+              <aside id="sidebarPreview" class="preview-sidebar flex h-[690px] w-72 shrink-0 flex-col rounded-2xl border border-white/15 bg-fds-sidebar">
+                <div class="collapse-center flex h-20 items-center gap-3 px-4">
+                  <div class="flex size-10 shrink-0 items-center justify-center text-fds-accent">
+                    <svg viewBox="0 0 24 24" class="size-8" fill="none" stroke="currentColor" stroke-width="1.7">
+                      <path d="M12 3 4.5 6v5.1c0 4.6 3 7.9 7.5 9.9 4.5-2 7.5-5.3 7.5-9.9V6L12 3Z"/>
+                      <path d="m9.7 12 1.5 1.5 3.3-3.5"/>
+                    </svg>
+                  </div>
+                  <div class="collapse-copy min-w-0 flex-1">
+                    <p class="truncate text-sm/5 font-semibold tracking-tight text-white">Fraud Detection System</p>
+                    <p class="truncate text-xs/4 font-normal text-fds-accent">powered by Skyworx</p>
+                  </div>
+                  <span class="collapse-chevron text-slate-300">≪</span>
+                </div>
+
+                <nav class="scrollbar flex-1 space-y-1 overflow-y-auto px-3 py-2">
+                  <a href="#" class="collapse-center flex h-11 items-center gap-3 rounded-lg px-3 text-sm/5 font-medium text-slate-200 hover:bg-white/5">
+                    <span class="flex size-5 shrink-0 items-center justify-center">▦</span><span class="collapse-copy truncate">Dashboard</span>
+                  </a>
+                  <a href="#" class="collapse-center flex h-11 items-center gap-3 rounded-lg px-3 text-sm/5 font-medium text-slate-200 hover:bg-white/5">
+                    <span class="flex size-5 shrink-0 items-center justify-center">▣</span><span class="collapse-copy truncate">Transactions</span>
+                  </a>
+                  <div>
+                    <button class="collapse-center flex h-11 w-full items-center gap-3 rounded-lg px-3 text-sm/5 font-semibold text-fds-accent hover:bg-white/5">
+                      <span class="flex size-5 shrink-0 items-center justify-center">⌘</span>
+                      <span class="collapse-copy min-w-0 flex-1 truncate text-left">Rule Engine</span>
+                      <span class="collapse-chevron">⌃</span>
+                    </button>
+                    <div class="collapse-submenu mt-1 space-y-1">
+                      <a href="#" class="flex min-h-10 items-center rounded-lg py-2 pl-12 pr-3 text-xs/5 font-normal text-slate-300">Configuration</a>
+                      <a href="#" class="relative flex min-h-10 items-center rounded-lg bg-fds-active py-2 pl-12 pr-3 text-xs/5 font-semibold text-white">
+                        <span class="absolute inset-y-0 left-0 w-1 rounded-l-lg bg-fds-accent"></span>Profile Groups
+                      </a>
+                      <a href="#" class="flex min-h-10 items-center rounded-lg py-2 pl-12 pr-3 text-xs/5 font-normal text-slate-300">Rule Groups</a>
+                    </div>
+                  </div>
+                  <a href="#" class="collapse-center flex h-11 items-center gap-3 rounded-lg px-3 text-sm/5 font-medium text-slate-200 hover:bg-white/5">
+                    <span class="flex size-5 shrink-0 items-center justify-center">▤</span><span class="collapse-copy truncate">Case Management</span>
+                  </a>
+                  <a href="#" class="collapse-center flex h-11 items-center gap-3 rounded-lg px-3 text-sm/5 font-medium text-slate-200 hover:bg-white/5">
+                    <span class="flex size-5 shrink-0 items-center justify-center">◇</span><span class="collapse-copy truncate">Access Control</span>
+                  </a>
+                  <a href="#" class="collapse-center flex h-11 items-center gap-3 rounded-lg px-3 text-sm/5 font-medium text-slate-200 hover:bg-white/5">
+                    <span class="flex size-5 shrink-0 items-center justify-center">▥</span><span class="collapse-copy truncate">Reports</span>
+                  </a>
+                  <a href="#" class="collapse-center flex h-11 items-center gap-3 rounded-lg px-3 text-sm/5 font-medium text-slate-200 hover:bg-white/5">
+                    <span class="flex size-5 shrink-0 items-center justify-center">▧</span><span class="collapse-copy truncate">Audit Log</span>
+                  </a>
+                </nav>
+
+                <div class="mx-3 border-t border-white/10 py-3">
+                  <button class="collapse-center flex w-full items-center gap-3 rounded-xl px-2 py-2 text-left hover:bg-white/5">
+                    <span class="flex size-11 shrink-0 items-center justify-center rounded-full bg-fds-accent text-sm/5 font-medium text-slate-950">AN</span>
+                    <span class="collapse-copy min-w-0 flex-1">
+                      <span class="block truncate text-xs/4 font-semibold text-white">Andrew Napitupulu</span>
+                      <span class="block truncate text-xs/4 font-normal text-slate-400">System Administrator</span>
+                    </span>
+                  </button>
+                </div>
+              </aside>
+
+              <div class="grid flex-1 gap-4 md:grid-cols-2">
+                <article class="rounded-2xl border border-white/10 bg-fds-surface2 p-5">
+                  <p class="text-xs/4 font-semibold uppercase tracking-wider text-fds-accent">Branding</p>
+                  <dl class="mt-4 space-y-3 text-xs/5">
+                    <div><dt class="text-slate-400">Product name</dt><dd class="mt-1 text-sm/5 font-semibold text-white">text-sm/5 font-semibold</dd></div>
+                    <div><dt class="text-slate-400">Powered by</dt><dd class="mt-1 text-xs/4 font-normal text-white">text-xs/4 font-normal</dd></div>
+                  </dl>
+                </article>
+                <article class="rounded-2xl border border-white/10 bg-fds-surface2 p-5">
+                  <p class="text-xs/4 font-semibold uppercase tracking-wider text-fds-accent">Navigation</p>
+                  <dl class="mt-4 space-y-3 text-xs/5">
+                    <div><dt class="text-slate-400">Primary / parent</dt><dd class="mt-1 text-sm/5 font-medium text-white">text-sm/5 font-medium</dd></div>
+                    <div><dt class="text-slate-400">Child menu</dt><dd class="mt-1 text-xs/5 font-normal text-white">text-xs/5 font-normal</dd></div>
+                    <div><dt class="text-slate-400">Active state</dt><dd class="mt-1 text-xs/5 font-semibold text-white">font-semibold, same size</dd></div>
+                  </dl>
+                </article>
+                <article class="rounded-2xl border border-white/10 bg-fds-surface2 p-5 md:col-span-2">
+                  <p class="text-xs/4 font-semibold uppercase tracking-wider text-fds-accent">Identity</p>
+                  <div class="mt-4 grid gap-4 sm:grid-cols-3">
+                    <div><p class="text-xs/4 text-slate-400">Avatar initials</p><p class="mt-1 text-sm/5 font-medium text-white">text-sm/5</p></div>
+                    <div><p class="text-xs/4 text-slate-400">User name</p><p class="mt-1 text-xs/4 font-semibold text-white">text-xs/4</p></div>
+                    <div><p class="text-xs/4 text-slate-400">User role</p><p class="mt-1 text-xs/4 font-normal text-white">text-xs/4</p></div>
+                  </div>
+                </article>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Component matrix -->
+        <section id="components" class="overflow-hidden rounded-3xl border border-white/10 bg-fds-surface/80 shadow-panel">
+          <div class="p-5 sm:p-6">
+            <div class="flex flex-col gap-4 xl:flex-row xl:items-end xl:justify-between">
+              <div>
+                <p class="text-xs/4 font-semibold uppercase tracking-wider text-fds-accent">Unified component matrix</p>
+                <h2 class="mt-2 text-xl/7 font-semibold text-white">Satu definisi untuk setiap komponen</h2>
+                <p class="mt-2 text-sm/6 text-slate-400">Gunakan pencarian untuk memfilter komponen. Tidak ada pengulangan berdasarkan halaman.</p>
+              </div>
+              <div class="flex w-full max-w-md items-center gap-3 rounded-xl border border-white/10 bg-black/20 px-4 py-3">
+                <span class="text-slate-500">⌕</span>
+                <input id="componentSearch" type="search" placeholder="Search component..." class="w-full bg-transparent text-sm/5 text-white outline-none placeholder:text-slate-500">
+              </div>
+            </div>
+          </div>
+
+          <div class="overflow-x-auto border-t border-white/10 scrollbar">
+            <table class="min-w-[1180px] w-full text-left">
+              <thead class="bg-black/20">
+                <tr class="text-xs/4 font-semibold uppercase tracking-wider text-slate-400">
+                  <th class="px-5 py-4">Component</th>
+                  <th class="px-5 py-4">Tailwind class</th>
+                  <th class="px-5 py-4">Rendered</th>
+                  <th class="px-5 py-4">Weight</th>
+                  <th class="px-5 py-4">Example</th>
+                  <th class="px-5 py-4">Applied to</th>
+                </tr>
+              </thead>
+              <tbody id="componentTable" class="divide-y divide-white/10">
+                <tr class="component-row" data-search="page title heading transactions reports case management rule configurations">
+                  <td class="px-5 py-4 text-xs/5 font-semibold text-white">Page title</td>
+                  <td class="px-5 py-4"><code class="text-xs/4 text-fds-accent">text-3xl/9 font-bold</code></td>
+                  <td class="px-5 py-4 text-xs/5 text-slate-300">30 / 36 px</td>
+                  <td class="px-5 py-4 text-xs/5 text-slate-300">700</td>
+                  <td class="px-5 py-4 text-3xl/9 font-bold text-white">Transactions</td>
+                  <td class="px-5 py-4 text-xs/5 text-slate-400">List pages, reports, configurations</td>
+                </tr>
+                <tr class="component-row" data-search="entity title transaction id case id transfer risk profile identifier detail">
+                  <td class="px-5 py-4 text-xs/5 font-semibold text-white">Entity / record title</td>
+                  <td class="px-5 py-4"><code class="text-xs/4 text-fds-accent">text-4xl/10 font-bold</code></td>
+                  <td class="px-5 py-4 text-xs/5 text-slate-300">36 / 40 px</td>
+                  <td class="px-5 py-4 text-xs/5 text-slate-300">700</td>
+                  <td class="px-5 py-4 text-4xl/10 font-bold tabular-nums text-white">TXN-928301</td>
+                  <td class="px-5 py-4 text-xs/5 text-slate-400">Transaction detail, case detail, risk profile</td>
+                </tr>
+                <tr class="component-row" data-search="compact page form modal title add new role">
+                  <td class="px-5 py-4 text-xs/5 font-semibold text-white">Compact page / form title</td>
+                  <td class="px-5 py-4"><code class="text-xs/4 text-fds-accent">text-2xl/8 font-bold</code></td>
+                  <td class="px-5 py-4 text-xs/5 text-slate-300">24 / 32 px</td>
+                  <td class="px-5 py-4 text-xs/5 text-slate-300">700</td>
+                  <td class="px-5 py-4 text-2xl/8 font-bold text-white">Add New Role</td>
+                  <td class="px-5 py-4 text-xs/5 text-slate-400">Form pages, modal/dialog title</td>
+                </tr>
+                <tr class="component-row" data-search="page description subtitle helper introductory">
+                  <td class="px-5 py-4 text-xs/5 font-semibold text-white">Page description</td>
+                  <td class="px-5 py-4"><code class="text-xs/4 text-fds-accent">text-sm/6 font-normal</code></td>
+                  <td class="px-5 py-4 text-xs/5 text-slate-300">14 / 24 px</td>
+                  <td class="px-5 py-4 text-xs/5 text-slate-300">400</td>
+                  <td class="px-5 py-4 text-sm/6 text-slate-300">Monitor evaluated transactions across risk levels.</td>
+                  <td class="px-5 py-4 text-xs/5 text-slate-400">All page headers</td>
+                </tr>
+                <tr class="component-row" data-search="breadcrumb navigation hierarchy">
+                  <td class="px-5 py-4 text-xs/5 font-semibold text-white">Breadcrumb</td>
+                  <td class="px-5 py-4"><code class="text-xs/4 text-fds-accent">text-sm/5 font-medium</code></td>
+                  <td class="px-5 py-4 text-xs/5 text-slate-300">14 / 20 px</td>
+                  <td class="px-5 py-4 text-xs/5 text-slate-300">500–600</td>
+                  <td class="px-5 py-4 text-sm/5 font-medium text-fds-accent">Transactions › Detail › TXN-928301</td>
+                  <td class="px-5 py-4 text-xs/5 text-slate-400">Detail and configuration pages</td>
+                </tr>
+                <tr class="component-row" data-search="metadata last updated by timestamp">
+                  <td class="px-5 py-4 text-xs/5 font-semibold text-white">Header metadata</td>
+                  <td class="px-5 py-4"><code class="text-xs/4 text-fds-accent">text-xs/5 font-normal</code></td>
+                  <td class="px-5 py-4 text-xs/5 text-slate-300">12 / 20 px</td>
+                  <td class="px-5 py-4 text-xs/5 text-slate-300">400</td>
+                  <td class="px-5 py-4 text-xs/5 tabular-nums text-slate-300">Last updated · 13 Jul 2026, 14:30 WIB</td>
+                  <td class="px-5 py-4 text-xs/5 text-slate-400">Page and entity headers</td>
+                </tr>
+                <tr class="component-row" data-search="section title approval score contribution assigned rule groups">
+                  <td class="px-5 py-4 text-xs/5 font-semibold text-white">Section title</td>
+                  <td class="px-5 py-4"><code class="text-xs/4 text-fds-accent">text-xl/7 font-semibold</code></td>
+                  <td class="px-5 py-4 text-xs/5 text-slate-300">20 / 28 px</td>
+                  <td class="px-5 py-4 text-xs/5 text-slate-300">600</td>
+                  <td class="px-5 py-4 text-xl/7 font-semibold text-white">Score Contribution</td>
+                  <td class="px-5 py-4 text-xs/5 text-slate-400">Major content sections</td>
+                </tr>
+                <tr class="component-row" data-search="card title triggered transaction access technical details configuration status">
+                  <td class="px-5 py-4 text-xs/5 font-semibold text-white">Card / block title</td>
+                  <td class="px-5 py-4"><code class="text-xs/4 text-fds-accent">text-lg/7 font-semibold</code></td>
+                  <td class="px-5 py-4 text-xs/5 text-slate-300">18 / 28 px</td>
+                  <td class="px-5 py-4 text-xs/5 text-slate-300">600</td>
+                  <td class="px-5 py-4 text-lg/7 font-semibold text-white">Triggered Transaction</td>
+                  <td class="px-5 py-4 text-xs/5 text-slate-400">Cards, timeline blocks, settings panels</td>
+                </tr>
+                <tr class="component-row" data-search="card description section description supporting text">
+                  <td class="px-5 py-4 text-xs/5 font-semibold text-white">Section/card description</td>
+                  <td class="px-5 py-4"><code class="text-xs/4 text-fds-accent">text-sm/6 font-normal</code></td>
+                  <td class="px-5 py-4 text-xs/5 text-slate-300">14 / 24 px</td>
+                  <td class="px-5 py-4 text-xs/5 text-slate-300">400</td>
+                  <td class="px-5 py-4 text-sm/6 text-slate-300">Breakdown of rule groups contributing to the final score.</td>
+                  <td class="px-5 py-4 text-xs/5 text-slate-400">Cards, sections, empty states</td>
+                </tr>
+                <tr class="component-row" data-search="metric number dashboard total report score sla amount">
+                  <td class="px-5 py-4 text-xs/5 font-semibold text-white">Primary metric</td>
+                  <td class="px-5 py-4"><code class="text-xs/4 text-fds-accent">text-4xl/10 font-bold tabular-nums</code></td>
+                  <td class="px-5 py-4 text-xs/5 text-slate-300">36 / 40 px</td>
+                  <td class="px-5 py-4 text-xs/5 text-slate-300">700</td>
+                  <td class="px-5 py-4 text-4xl/10 font-bold tabular-nums text-white">24,568</td>
+                  <td class="px-5 py-4 text-xs/5 text-slate-400">Report hero, total risk score</td>
+                </tr>
+                <tr class="component-row" data-search="summary card metric approved review blocked open cases">
+                  <td class="px-5 py-4 text-xs/5 font-semibold text-white">Summary metric</td>
+                  <td class="px-5 py-4"><code class="text-xs/4 text-fds-accent">text-3xl/9 font-bold tabular-nums</code></td>
+                  <td class="px-5 py-4 text-xs/5 text-slate-300">30 / 36 px</td>
+                  <td class="px-5 py-4 text-xs/5 text-slate-300">700</td>
+                  <td class="px-5 py-4 text-3xl/9 font-bold tabular-nums text-white">18,451</td>
+                  <td class="px-5 py-4 text-xs/5 text-slate-400">Dashboard and list summary cards</td>
+                </tr>
+                <tr class="component-row" data-search="metric label approved blocked cases percent">
+                  <td class="px-5 py-4 text-xs/5 font-semibold text-white">Metric label</td>
+                  <td class="px-5 py-4"><code class="text-xs/4 text-fds-accent">text-sm/5 font-semibold</code></td>
+                  <td class="px-5 py-4 text-xs/5 text-slate-300">14 / 20 px</td>
+                  <td class="px-5 py-4 text-xs/5 text-slate-300">600</td>
+                  <td class="px-5 py-4 text-sm/5 font-semibold text-white">Approved Transactions</td>
+                  <td class="px-5 py-4 text-xs/5 text-slate-400">Metric and KPI cards</td>
+                </tr>
+                <tr class="component-row" data-search="metric annotation percentage all transactions">
+                  <td class="px-5 py-4 text-xs/5 font-semibold text-white">Metric annotation</td>
+                  <td class="px-5 py-4"><code class="text-xs/4 text-fds-accent">text-xs/5 font-semibold</code></td>
+                  <td class="px-5 py-4 text-xs/5 text-slate-300">12 / 20 px</td>
+                  <td class="px-5 py-4 text-xs/5 text-slate-300">600</td>
+                  <td class="px-5 py-4 text-xs/5 font-semibold text-fds-success">74.33% of all transactions</td>
+                  <td class="px-5 py-4 text-xs/5 text-slate-400">KPI supporting values</td>
+                </tr>
+                <tr class="component-row" data-search="button primary secondary danger text view details export save changes">
+                  <td class="px-5 py-4 text-xs/5 font-semibold text-white">Button label</td>
+                  <td class="px-5 py-4"><code class="text-xs/4 text-fds-accent">text-sm/5 font-semibold</code></td>
+                  <td class="px-5 py-4 text-xs/5 text-slate-300">14 / 20 px</td>
+                  <td class="px-5 py-4 text-xs/5 text-slate-300">600</td>
+                  <td class="px-5 py-4"><span class="inline-flex rounded-lg bg-fds-blue px-3 py-2 text-sm/5 font-semibold text-white">Save Changes</span></td>
+                  <td class="px-5 py-4 text-xs/5 text-slate-400">All button variants</td>
+                </tr>
+                <tr class="component-row" data-search="tabs navigation configuration profile group approval danger zone">
+                  <td class="px-5 py-4 text-xs/5 font-semibold text-white">Tab label</td>
+                  <td class="px-5 py-4"><code class="text-xs/4 text-fds-accent">text-sm/5 font-medium</code></td>
+                  <td class="px-5 py-4 text-xs/5 text-slate-300">14 / 20 px</td>
+                  <td class="px-5 py-4 text-xs/5 text-slate-300">500–600</td>
+                  <td class="px-5 py-4 text-sm/5 font-semibold text-fds-blue">Risk Evaluation</td>
+                  <td class="px-5 py-4 text-xs/5 text-slate-400">Primary and secondary tabs</td>
+                </tr>
+                <tr class="component-row" data-search="badge status risk level approved rejected pending high medium active">
+                  <td class="px-5 py-4 text-xs/5 font-semibold text-white">Status / risk badge</td>
+                  <td class="px-5 py-4"><code class="text-xs/4 text-fds-accent">text-xs/4 font-semibold uppercase</code></td>
+                  <td class="px-5 py-4 text-xs/5 text-slate-300">12 / 16 px</td>
+                  <td class="px-5 py-4 text-xs/5 text-slate-300">600</td>
+                  <td class="px-5 py-4"><span class="rounded-md bg-red-500/15 px-2.5 py-1 text-xs/4 font-semibold uppercase text-red-300">HIGH</span></td>
+                  <td class="px-5 py-4 text-xs/5 text-slate-400">Risk, lifecycle, workflow status</td>
+                </tr>
+                <tr class="component-row" data-search="input search select filter placeholder date range sort">
+                  <td class="px-5 py-4 text-xs/5 font-semibold text-white">Input / select value</td>
+                  <td class="px-5 py-4"><code class="text-xs/4 text-fds-accent">text-sm/5 font-normal</code></td>
+                  <td class="px-5 py-4 text-xs/5 text-slate-300">14 / 20 px</td>
+                  <td class="px-5 py-4 text-xs/5 text-slate-300">400</td>
+                  <td class="px-5 py-4"><span class="inline-flex rounded-lg border border-white/10 bg-black/20 px-3 py-2 text-sm/5 text-slate-300">Search by transaction ID...</span></td>
+                  <td class="px-5 py-4 text-xs/5 text-slate-400">Search, select, date, textarea</td>
+                </tr>
+                <tr class="component-row" data-search="form label field label required">
+                  <td class="px-5 py-4 text-xs/5 font-semibold text-white">Field label</td>
+                  <td class="px-5 py-4"><code class="text-xs/4 text-fds-accent">text-sm/5 font-semibold</code></td>
+                  <td class="px-5 py-4 text-xs/5 text-slate-300">14 / 20 px</td>
+                  <td class="px-5 py-4 text-xs/5 text-slate-300">600</td>
+                  <td class="px-5 py-4 text-sm/5 font-semibold text-white">Minimum Risk Score <span class="text-red-400">*</span></td>
+                  <td class="px-5 py-4 text-xs/5 text-slate-400">Forms and configuration inputs</td>
+                </tr>
+                <tr class="component-row" data-search="helper text field description validation character count">
+                  <td class="px-5 py-4 text-xs/5 font-semibold text-white">Helper / validation text</td>
+                  <td class="px-5 py-4"><code class="text-xs/4 text-fds-accent">text-xs/5 font-normal</code></td>
+                  <td class="px-5 py-4 text-xs/5 text-slate-300">12 / 20 px</td>
+                  <td class="px-5 py-4 text-xs/5 text-slate-300">400</td>
+                  <td class="px-5 py-4 text-xs/5 text-slate-400">Enter a score between 0 and 100.</td>
+                  <td class="px-5 py-4 text-xs/5 text-slate-400">Forms, warnings, validation</td>
+                </tr>
+                <tr class="component-row" data-search="table header column labels">
+                  <td class="px-5 py-4 text-xs/5 font-semibold text-white">Table header</td>
+                  <td class="px-5 py-4"><code class="text-xs/4 text-fds-accent">text-xs/4 font-semibold uppercase tracking-wide</code></td>
+                  <td class="px-5 py-4 text-xs/5 text-slate-300">12 / 16 px</td>
+                  <td class="px-5 py-4 text-xs/5 text-slate-300">600</td>
+                  <td class="px-5 py-4 text-xs/4 font-semibold uppercase tracking-wide text-slate-300">Transaction Time</td>
+                  <td class="px-5 py-4 text-xs/5 text-slate-400">All data tables</td>
+                </tr>
+                <tr class="component-row" data-search="table primary cell customer rule group configuration name">
+                  <td class="px-5 py-4 text-xs/5 font-semibold text-white">Primary table cell</td>
+                  <td class="px-5 py-4"><code class="text-xs/4 text-fds-accent">text-sm/5 font-semibold</code></td>
+                  <td class="px-5 py-4 text-xs/5 text-slate-300">14 / 20 px</td>
+                  <td class="px-5 py-4 text-xs/5 text-slate-300">600</td>
+                  <td class="px-5 py-4 text-sm/5 font-semibold text-white">Amount Behavior Rules</td>
+                  <td class="px-5 py-4 text-xs/5 text-slate-400">Names, IDs, leading values</td>
+                </tr>
+                <tr class="component-row" data-search="table secondary cell metadata account email reason timestamp">
+                  <td class="px-5 py-4 text-xs/5 font-semibold text-white">Secondary table cell</td>
+                  <td class="px-5 py-4"><code class="text-xs/4 text-fds-accent">text-xs/5 font-normal</code></td>
+                  <td class="px-5 py-4 text-xs/5 text-slate-300">12 / 20 px</td>
+                  <td class="px-5 py-4 text-xs/5 text-slate-300">400</td>
+                  <td class="px-5 py-4 text-xs/5 text-slate-400">3 reasons triggered</td>
+                  <td class="px-5 py-4 text-xs/5 text-slate-400">Supporting data under primary cell</td>
+                </tr>
+                <tr class="component-row" data-search="key value label transaction time amount customer channel device">
+                  <td class="px-5 py-4 text-xs/5 font-semibold text-white">Key-value label</td>
+                  <td class="px-5 py-4"><code class="text-xs/4 text-fds-accent">text-xs/4 font-medium</code></td>
+                  <td class="px-5 py-4 text-xs/5 text-slate-300">12 / 16 px</td>
+                  <td class="px-5 py-4 text-xs/5 text-slate-300">500</td>
+                  <td class="px-5 py-4 text-xs/4 font-medium text-slate-400">Transaction Time</td>
+                  <td class="px-5 py-4 text-xs/5 text-slate-400">Overview strips, detail cards</td>
+                </tr>
+                <tr class="component-row" data-search="key value transaction value amount customer detail">
+                  <td class="px-5 py-4 text-xs/5 font-semibold text-white">Key-value value</td>
+                  <td class="px-5 py-4"><code class="text-xs/4 text-fds-accent">text-sm/5 font-semibold</code></td>
+                  <td class="px-5 py-4 text-xs/5 text-slate-300">14 / 20 px</td>
+                  <td class="px-5 py-4 text-xs/5 text-slate-300">600</td>
+                  <td class="px-5 py-4 text-sm/5 font-semibold tabular-nums text-white">Rp 24.500.000</td>
+                  <td class="px-5 py-4 text-xs/5 text-slate-400">Overview strips, detail cards</td>
+                </tr>
+                <tr class="component-row" data-search="alert title warning info urgent auto approve">
+                  <td class="px-5 py-4 text-xs/5 font-semibold text-white">Alert title</td>
+                  <td class="px-5 py-4"><code class="text-xs/4 text-fds-accent">text-sm/5 font-semibold</code></td>
+                  <td class="px-5 py-4 text-xs/5 text-slate-300">14 / 20 px</td>
+                  <td class="px-5 py-4 text-xs/5 text-slate-300">600</td>
+                  <td class="px-5 py-4 text-sm/5 font-semibold text-red-300">3 cases will auto-approve in less than 1 hour</td>
+                  <td class="px-5 py-4 text-xs/5 text-slate-400">Info, warning, success, danger alerts</td>
+                </tr>
+                <tr class="component-row" data-search="alert body warning body info text">
+                  <td class="px-5 py-4 text-xs/5 font-semibold text-white">Alert body</td>
+                  <td class="px-5 py-4"><code class="text-xs/4 text-fds-accent">text-xs/5 font-normal</code></td>
+                  <td class="px-5 py-4 text-xs/5 text-slate-300">12 / 20 px</td>
+                  <td class="px-5 py-4 text-xs/5 text-slate-300">400</td>
+                  <td class="px-5 py-4 text-xs/5 text-slate-400">The countdown starts from case creation and never resets.</td>
+                  <td class="px-5 py-4 text-xs/5 text-slate-400">All alert variants</td>
+                </tr>
+                <tr class="component-row" data-search="timeline activity log event title case approved reviewed reassigned">
+                  <td class="px-5 py-4 text-xs/5 font-semibold text-white">Timeline event title</td>
+                  <td class="px-5 py-4"><code class="text-xs/4 text-fds-accent">text-sm/5 font-semibold</code></td>
+                  <td class="px-5 py-4 text-xs/5 text-slate-300">14 / 20 px</td>
+                  <td class="px-5 py-4 text-xs/5 text-slate-300">600</td>
+                  <td class="px-5 py-4 text-sm/5 font-semibold text-white">Case approved</td>
+                  <td class="px-5 py-4 text-xs/5 text-slate-400">Activity Log and audit trail</td>
+                </tr>
+                <tr class="component-row" data-search="timeline metadata actor date time">
+                  <td class="px-5 py-4 text-xs/5 font-semibold text-white">Timeline metadata</td>
+                  <td class="px-5 py-4"><code class="text-xs/4 text-fds-accent">text-xs/4 font-medium</code></td>
+                  <td class="px-5 py-4 text-xs/5 text-slate-300">12 / 16 px</td>
+                  <td class="px-5 py-4 text-xs/5 text-slate-300">500</td>
+                  <td class="px-5 py-4 text-xs/4 font-medium tabular-nums text-fds-blue">Supervisor · 25 Nov 2025, 11:24 WIB</td>
+                  <td class="px-5 py-4 text-xs/5 text-slate-400">Activity Log and audit trail</td>
+                </tr>
+                <tr class="component-row" data-search="timeline description event body">
+                  <td class="px-5 py-4 text-xs/5 font-semibold text-white">Timeline description</td>
+                  <td class="px-5 py-4"><code class="text-xs/4 text-fds-accent">text-sm/5 font-normal</code></td>
+                  <td class="px-5 py-4 text-xs/5 text-slate-300">14 / 20 px</td>
+                  <td class="px-5 py-4 text-xs/5 text-slate-300">400</td>
+                  <td class="px-5 py-4 text-sm/5 text-slate-300">Case has been approved. Final decision: APPROVE.</td>
+                  <td class="px-5 py-4 text-xs/5 text-slate-400">Activity Log and audit trail</td>
+                </tr>
+                <tr class="component-row" data-search="chart title report distribution">
+                  <td class="px-5 py-4 text-xs/5 font-semibold text-white">Chart title</td>
+                  <td class="px-5 py-4"><code class="text-xs/4 text-fds-accent">text-lg/7 font-semibold</code></td>
+                  <td class="px-5 py-4 text-xs/5 text-slate-300">18 / 28 px</td>
+                  <td class="px-5 py-4 text-xs/5 text-slate-300">600</td>
+                  <td class="px-5 py-4 text-lg/7 font-semibold text-white">Distribution by Channel</td>
+                  <td class="px-5 py-4 text-xs/5 text-slate-400">Reports and analytics cards</td>
+                </tr>
+                <tr class="component-row" data-search="chart legend label">
+                  <td class="px-5 py-4 text-xs/5 font-semibold text-white">Chart legend</td>
+                  <td class="px-5 py-4"><code class="text-xs/4 text-fds-accent">text-xs/5 font-medium</code></td>
+                  <td class="px-5 py-4 text-xs/5 text-slate-300">12 / 20 px</td>
+                  <td class="px-5 py-4 text-xs/5 text-slate-300">500</td>
+                  <td class="px-5 py-4 text-xs/5 font-medium tabular-nums text-white">Mobile Banking · 5,362 (21.8%)</td>
+                  <td class="px-5 py-4 text-xs/5 text-slate-400">Charts and report summaries</td>
+                </tr>
+                <tr class="component-row" data-search="formula rule engine risk score raw total raw max code">
+                  <td class="px-5 py-4 text-xs/5 font-semibold text-white">Formula / technical expression</td>
+                  <td class="px-5 py-4"><code class="text-xs/4 text-fds-accent">text-sm/6 font-medium</code></td>
+                  <td class="px-5 py-4 text-xs/5 text-slate-300">14 / 24 px</td>
+                  <td class="px-5 py-4 text-xs/5 text-slate-300">500</td>
+                  <td class="px-5 py-4 text-sm/6 font-medium text-fds-accent">RISK_SCORE = ( RAW_TOTAL / RAW_MAX ) × MAX_RISK_SCORE</td>
+                  <td class="px-5 py-4 text-xs/5 text-slate-400">Rule Engine and risk configuration</td>
+                </tr>
+                <tr class="component-row" data-search="pagination footer count showing rows per page">
+                  <td class="px-5 py-4 text-xs/5 font-semibold text-white">Pagination / result count</td>
+                  <td class="px-5 py-4"><code class="text-xs/4 text-fds-accent">text-xs/5 font-medium</code></td>
+                  <td class="px-5 py-4 text-xs/5 text-slate-300">12 / 20 px</td>
+                  <td class="px-5 py-4 text-xs/5 text-slate-300">500</td>
+                  <td class="px-5 py-4 text-xs/5 font-medium text-slate-300">Showing 1–10 of 24,789 transactions</td>
+                  <td class="px-5 py-4 text-xs/5 text-slate-400">All paginated lists and reports</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- List page preview -->
+        <section id="preview-list" class="rounded-3xl border border-white/10 bg-fds-surface/80 p-5 shadow-panel sm:p-6">
+          <div>
+            <p class="text-xs/4 font-semibold uppercase tracking-wider text-fds-accent">Representative pattern</p>
+            <h2 class="mt-2 text-xl/7 font-semibold text-white">List page: Transactions, Cases, Rule Configurations, Reports</h2>
+          </div>
+
+          <div class="mt-6 overflow-x-auto rounded-2xl border border-white/10 bg-slate-50 p-6 text-slate-950 scrollbar">
+            <div class="min-w-[980px]">
+              <div class="flex items-start justify-between gap-6">
+                <div>
+                  <h3 class="text-3xl/9 font-bold">Transactions</h3>
+                  <p class="mt-1 text-sm/6 text-slate-600">Monitor all evaluated transactions across risk levels, decisions, and linked cases.</p>
+                </div>
+                <button class="rounded-lg border border-slate-300 bg-white px-4 py-2.5 text-sm/5 font-semibold">Export</button>
+              </div>
+
+              <div class="mt-6 grid grid-cols-3 gap-4">
+                <article class="rounded-xl border border-slate-200 bg-white p-5">
+                  <p class="text-sm/5 font-semibold text-slate-700">Approved</p>
+                  <p class="mt-2 text-3xl/9 font-bold tabular-nums">18,451</p>
+                  <p class="mt-1 text-xs/5 font-semibold text-green-600">74.33% of all transactions</p>
+                </article>
+                <article class="rounded-xl border border-slate-200 bg-white p-5">
+                  <p class="text-sm/5 font-semibold text-slate-700">Review</p>
+                  <p class="mt-2 text-3xl/9 font-bold tabular-nums">5,621</p>
+                  <p class="mt-1 text-xs/5 font-semibold text-violet-600">22.68% of all transactions</p>
+                </article>
+                <article class="rounded-xl border border-slate-200 bg-white p-5">
+                  <p class="text-sm/5 font-semibold text-slate-700">Blocked</p>
+                  <p class="mt-2 text-3xl/9 font-bold tabular-nums">1,287</p>
+                  <p class="mt-1 text-xs/5 font-semibold text-red-600">5.19% of all transactions</p>
+                </article>
+              </div>
+
+              <div class="mt-5 grid grid-cols-[1.5fr_repeat(4,1fr)_auto] gap-3 rounded-xl border border-slate-200 bg-white p-4">
+                <div>
+                  <p class="mb-2 text-xs/4 font-semibold text-slate-700">Search</p>
+                  <div class="rounded-lg border border-slate-300 px-3 py-2.5 text-sm/5 text-slate-400">Search by transaction ID...</div>
+                </div>
+                <div><p class="mb-2 text-xs/4 font-semibold text-slate-700">Risk</p><div class="rounded-lg border border-slate-300 px-3 py-2.5 text-sm/5">All</div></div>
+                <div><p class="mb-2 text-xs/4 font-semibold text-slate-700">Decision</p><div class="rounded-lg border border-slate-300 px-3 py-2.5 text-sm/5">All</div></div>
+                <div><p class="mb-2 text-xs/4 font-semibold text-slate-700">Case</p><div class="rounded-lg border border-slate-300 px-3 py-2.5 text-sm/5">All</div></div>
+                <div><p class="mb-2 text-xs/4 font-semibold text-slate-700">Sort by</p><div class="rounded-lg border border-slate-300 px-3 py-2.5 text-sm/5">Latest</div></div>
+                <button class="self-end rounded-lg border border-slate-300 px-4 py-2.5 text-sm/5 font-semibold">Reset</button>
+              </div>
+
+              <div class="mt-5 overflow-hidden rounded-xl border border-slate-200 bg-white">
+                <div class="grid grid-cols-[1.4fr_.7fr_.6fr_.9fr_1fr_1.4fr_1.2fr_auto] gap-4 border-b border-slate-200 bg-slate-100 px-4 py-3 text-xs/4 font-semibold uppercase tracking-wide text-slate-600">
+                  <span>Transaction / Customer</span><span>Risk</span><span>Score</span><span>Decision</span><span>Case</span><span>Reason</span><span>Time</span><span>Action</span>
+                </div>
+                <div class="grid grid-cols-[1.4fr_.7fr_.6fr_.9fr_1fr_1.4fr_1.2fr_auto] gap-4 px-4 py-4">
+                  <div><p class="text-sm/5 font-semibold text-blue-600">TRX-90321</p><p class="text-xs/5 text-slate-600">John Mitchell · Acc: 9876 5432 1098</p></div>
+                  <div><span class="rounded-md bg-red-100 px-2 py-1 text-xs/4 font-semibold uppercase text-red-700">HIGH</span></div>
+                  <p class="text-sm/5 font-semibold tabular-nums">87</p>
+                  <div><span class="rounded-md bg-green-100 px-2 py-1 text-xs/4 font-semibold uppercase text-green-700">APPROVED</span></div>
+                  <div><p class="text-sm/5 font-semibold text-blue-600">CS-10284</p><p class="text-xs/5 text-violet-600">Need approval</p></div>
+                  <p class="text-xs/5 text-slate-600">Amount 4.2× above usual</p>
+                  <p class="text-xs/5 tabular-nums text-slate-600">08 Jul 2026, 10:42 WIB</p>
+                  <button class="rounded-lg border border-blue-300 px-3 py-2 text-sm/5 font-semibold text-blue-600">View Details</button>
+                </div>
+                <div class="flex items-center justify-between border-t border-slate-200 px-4 py-3">
+                  <p class="text-xs/5 font-medium text-slate-600">Showing 1–10 of 24,789 transactions</p>
+                  <div class="flex gap-2 text-xs/5 font-semibold"><span class="rounded border border-slate-300 px-3 py-2">‹</span><span class="rounded bg-blue-600 px-3 py-2 text-white">1</span><span class="rounded border border-slate-300 px-3 py-2">2</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Detail page preview -->
+        <section id="preview-detail" class="rounded-3xl border border-white/10 bg-fds-surface/80 p-5 shadow-panel sm:p-6">
+          <div>
+            <p class="text-xs/4 font-semibold uppercase tracking-wider text-fds-accent">Representative pattern</p>
+            <h2 class="mt-2 text-xl/7 font-semibold text-white">Detail page: Transaction, Case, Risk Profile</h2>
+          </div>
+
+          <div class="mt-6 overflow-x-auto rounded-2xl border border-white/10 bg-slate-50 p-6 text-slate-950 scrollbar">
+            <div class="min-w-[980px]">
+              <p class="text-sm/5 font-medium text-blue-600">Transactions › Transaction Detail › TXN-928301</p>
+              <div class="mt-5 flex items-start justify-between gap-6">
+                <div>
+                  <div class="flex items-center gap-3">
+                    <h3 class="text-4xl/10 font-bold tabular-nums">TXN-928301</h3>
+                    <span class="rounded-md bg-red-100 px-3 py-1.5 text-xs/4 font-semibold uppercase text-red-700">HIGH</span>
+                    <span class="rounded-md bg-green-100 px-3 py-1.5 text-xs/4 font-semibold uppercase text-green-700">APPROVED</span>
+                    <span class="rounded-md bg-violet-100 px-3 py-1.5 text-xs/4 font-semibold uppercase text-violet-700">REVIEW</span>
+                  </div>
+                </div>
+                <button class="rounded-lg border border-blue-400 px-4 py-2.5 text-sm/5 font-semibold text-blue-600">Export</button>
+              </div>
+
+              <div class="mt-6 grid grid-cols-4 rounded-xl border border-slate-200 bg-white">
+                <div class="p-5"><p class="text-xs/4 font-medium text-slate-500">Transaction Time</p><p class="mt-2 text-sm/5 font-semibold tabular-nums">25 Nov 2025, 10:32 WIB</p></div>
+                <div class="border-l border-slate-200 p-5"><p class="text-xs/4 font-medium text-slate-500">Amount</p><p class="mt-2 text-sm/5 font-semibold tabular-nums">Rp 24.500.000</p></div>
+                <div class="border-l border-slate-200 p-5"><p class="text-xs/4 font-medium text-slate-500">Customer</p><p class="mt-2 text-sm/5 font-semibold">John Mitchell</p></div>
+                <div class="border-l border-slate-200 p-5"><p class="text-xs/4 font-medium text-slate-500">Auto Resolve</p><p class="mt-2 text-sm/5 font-semibold tabular-nums text-red-600">42m left</p></div>
+              </div>
+
+              <div class="mt-6 flex gap-8 border-b border-slate-200">
+                <span class="border-b-2 border-blue-600 px-4 pb-3 text-sm/5 font-semibold text-blue-600">Transaction Summary</span>
+                <span class="px-4 pb-3 text-sm/5 font-medium text-slate-500">Risk Evaluation</span>
+                <span class="px-4 pb-3 text-sm/5 font-medium text-slate-500">Activity Log</span>
+              </div>
+
+              <div class="mt-5 grid grid-cols-2 gap-4">
+                <article class="rounded-xl border border-slate-200 bg-white p-5">
+                  <h4 class="text-lg/7 font-semibold">Triggered Transaction</h4>
+                  <div class="mt-4 divide-y divide-slate-200">
+                    <div class="grid grid-cols-2 py-3"><span class="text-xs/4 font-medium text-slate-500">Transaction ID</span><span class="text-sm/5 font-semibold tabular-nums">TXN-928301</span></div>
+                    <div class="grid grid-cols-2 py-3"><span class="text-xs/4 font-medium text-slate-500">Transaction Time</span><span class="text-sm/5 font-semibold tabular-nums">25 Nov 2025, 10:32 WIB</span></div>
+                    <div class="grid grid-cols-2 py-3"><span class="text-xs/4 font-medium text-slate-500">Currency</span><span class="text-sm/5 font-semibold">IDR</span></div>
+                  </div>
+                </article>
+                <article class="rounded-xl border border-slate-200 bg-white p-5">
+                  <div class="flex items-start justify-between">
+                    <div>
+                      <h4 class="text-xl/7 font-semibold">Score Contribution</h4>
+                      <p class="mt-1 text-sm/6 text-slate-600">Breakdown of rule groups and reasons.</p>
+                    </div>
+                    <div class="rounded-lg border border-red-300 bg-red-50 px-4 py-3 text-center">
+                      <p class="text-xs/4 font-medium text-slate-600">Total Risk Score</p>
+                      <p class="mt-1 text-2xl/8 font-bold tabular-nums text-red-600">95 / 100</p>
+                    </div>
+                  </div>
+                  <div class="mt-4 rounded-lg border border-slate-200">
+                    <div class="grid grid-cols-[1.5fr_1fr_.6fr] bg-slate-100 px-4 py-3 text-xs/4 font-semibold uppercase tracking-wide text-slate-600"><span>Rule Group</span><span>Contribution</span><span>Percentage</span></div>
+                    <div class="grid grid-cols-[1.5fr_1fr_.6fr] px-4 py-3"><div><p class="text-sm/5 font-semibold">Amount Behavior Rules</p><p class="text-xs/5 text-slate-500">3 reasons triggered</p></div><p class="text-sm/5 font-semibold tabular-nums">+38</p><p class="text-sm/5 font-semibold tabular-nums text-blue-600">38.0%</p></div>
+                  </div>
+                </article>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Form/settings preview -->
+        <section id="preview-form" class="rounded-3xl border border-white/10 bg-fds-surface/80 p-5 shadow-panel sm:p-6">
+          <div>
+            <p class="text-xs/4 font-semibold uppercase tracking-wider text-fds-accent">Representative pattern</p>
+            <h2 class="mt-2 text-xl/7 font-semibold text-white">Form, configuration, and danger-zone patterns</h2>
+          </div>
+
+          <div class="mt-6 grid gap-4 xl:grid-cols-2">
+            <article class="rounded-2xl border border-white/10 bg-fds-surface2 p-5">
+              <p class="text-xs/4 font-semibold uppercase tracking-wider text-fds-accent">Form hierarchy</p>
+              <div class="mt-5 rounded-xl bg-slate-50 p-5 text-slate-950">
+                <h3 class="text-2xl/8 font-bold">Add New Role</h3>
+                <p class="mt-1 text-sm/6 text-slate-600">Define role information and configure permissions for this role.</p>
+                <div class="mt-5">
+                  <label class="text-sm/5 font-semibold">Role Name <span class="text-red-600">*</span></label>
+                  <div class="mt-2 rounded-lg border border-slate-300 bg-white px-3 py-2.5 text-sm/5 text-slate-400">Enter role name</div>
+                  <p class="mt-2 text-xs/5 text-slate-500">Use a clear name that reflects the role's responsibility.</p>
+                </div>
+                <div class="mt-5">
+                  <label class="text-sm/5 font-semibold">Description</label>
+                  <div class="mt-2 min-h-24 rounded-lg border border-slate-300 bg-white px-3 py-2.5 text-sm/5 text-slate-400">Describe the purpose and responsibilities of this role</div>
+                  <p class="mt-2 text-xs/5 text-slate-500">Explain what this role can do and who should use it.</p>
+                </div>
+              </div>
+            </article>
+
+            <article class="rounded-2xl border border-white/10 bg-fds-surface2 p-5">
+              <p class="text-xs/4 font-semibold uppercase tracking-wider text-fds-accent">Technical expression</p>
+              <div class="mt-5 rounded-xl bg-slate-50 p-5 text-slate-950">
+                <h3 class="text-xl/7 font-semibold">Risk Index Formula</h3>
+                <p class="mt-1 text-sm/6 text-slate-600">Understand how the final risk score is calculated.</p>
+                <div class="mt-4 rounded-lg border border-blue-200 bg-blue-50 px-4 py-3 text-center text-sm/6 font-medium text-blue-700">
+                  RISK_SCORE = ( RAW_TOTAL / RAW_MAX ) × MAX_RISK_SCORE
+                </div>
+                <dl class="mt-4 space-y-3">
+                  <div class="grid grid-cols-[150px_1fr] gap-4"><dt class="text-xs/4 font-semibold">RAW_TOTAL</dt><dd class="text-xs/5 text-slate-600">Total raw risk from active rule groups</dd></div>
+                  <div class="grid grid-cols-[150px_1fr] gap-4"><dt class="text-xs/4 font-semibold">RAW_MAX</dt><dd class="text-xs/5 text-slate-600">Maximum possible raw risk</dd></div>
+                  <div class="grid grid-cols-[150px_1fr] gap-4"><dt class="text-xs/4 font-semibold">MAX_RISK_SCORE</dt><dd class="text-xs/5 text-slate-600">Maximum risk scale</dd></div>
+                </dl>
+              </div>
+            </article>
+
+            <article class="rounded-2xl border border-red-400/20 bg-red-400/5 p-5 xl:col-span-2">
+              <p class="text-xs/4 font-semibold uppercase tracking-wider text-red-300">Danger zone</p>
+              <div class="mt-5 grid gap-5 rounded-xl border border-red-200 bg-slate-50 p-5 text-slate-950 lg:grid-cols-[1fr_auto] lg:items-center">
+                <div>
+                  <h3 class="text-lg/7 font-semibold">Delete Rule Configuration</h3>
+                  <p class="mt-1 text-sm/6 text-slate-600">Permanently delete this rule configuration. This action cannot be undone.</p>
+                  <div class="mt-4 rounded-lg border border-red-200 bg-red-50 p-4">
+                    <p class="text-sm/5 font-semibold text-red-700">Before you delete:</p>
+                    <p class="mt-2 text-xs/5 text-slate-600">Make sure the configuration is inactive and not used by an active workflow.</p>
+                  </div>
+                </div>
+                <button class="rounded-lg bg-red-600 px-5 py-3 text-sm/5 font-semibold text-white">Delete Rule Configuration</button>
+              </div>
+            </article>
+          </div>
+        </section>
+
+        <!-- Workflow preview -->
+        <section id="preview-workflow" class="rounded-3xl border border-white/10 bg-fds-surface/80 p-5 shadow-panel sm:p-6">
+          <div>
+            <p class="text-xs/4 font-semibold uppercase tracking-wider text-fds-accent">Representative pattern</p>
+            <h2 class="mt-2 text-xl/7 font-semibold text-white">Approval, alerts, and activity log</h2>
+          </div>
+
+          <div class="mt-6 grid gap-4 xl:grid-cols-2">
+            <article class="rounded-2xl border border-white/10 bg-slate-50 p-5 text-slate-950">
+              <div class="flex items-start justify-between gap-4">
+                <div>
+                  <h3 class="text-xl/7 font-semibold">Approval</h3>
+                  <p class="mt-1 text-sm/6 text-slate-600">Review and decision history for this draft.</p>
+                </div>
+                <span class="rounded-md bg-green-100 px-3 py-1.5 text-xs/4 font-semibold uppercase text-green-700">CHECKER APPROVED</span>
+              </div>
+              <div class="mt-5">
+                <h4 class="text-lg/7 font-semibold">Approver Decision</h4>
+                <p class="mt-1 text-sm/6 text-slate-600">Final decisions are made by approvers after checker approval.</p>
+                <div class="mt-4 overflow-hidden rounded-lg border border-slate-200">
+                  <div class="grid grid-cols-[1.4fr_1fr_.8fr_1fr] bg-slate-100 px-4 py-3 text-xs/4 font-semibold uppercase tracking-wide text-slate-600">
+                    <span>Approver</span><span>Role</span><span>Status</span><span>Updated At</span>
+                  </div>
+                  <div class="grid grid-cols-[1.4fr_1fr_.8fr_1fr] items-center px-4 py-3">
+                    <div><p class="text-sm/5 font-semibold">Fajar Pratama</p><p class="text-xs/5 text-slate-500">fajar.pratama@bank.com</p></div>
+                    <p class="text-sm/5">Supervisor</p>
+                    <div><span class="rounded-md bg-red-100 px-2 py-1 text-xs/4 font-semibold uppercase text-red-700">REJECTED</span></div>
+                    <p class="text-xs/5 tabular-nums text-slate-600">13 Jul 2026, 15:02 WIB</p>
+                  </div>
+                </div>
+              </div>
+            </article>
+
+            <article class="rounded-2xl border border-white/10 bg-slate-50 p-5 text-slate-950">
+              <div class="rounded-lg border border-red-200 bg-red-50 p-4">
+                <p class="text-sm/5 font-semibold text-red-700">3 cases will auto-approve in less than 1 hour</p>
+                <p class="mt-1 text-xs/5 text-slate-600">The countdown starts from case creation and never resets.</p>
+              </div>
+              <div class="mt-5">
+                <h3 class="text-lg/7 font-semibold">Activity Log</h3>
+                <p class="mt-1 text-sm/6 text-slate-600">Audit trail of system events and reviewer actions for this case.</p>
+              </div>
+              <div class="mt-5 space-y-4">
+                <div class="border-l-2 border-green-300 pl-4">
+                  <p class="text-sm/5 font-semibold">Case approved</p>
+                  <p class="mt-1 text-xs/4 font-medium tabular-nums text-blue-600">Supervisor · 25 Nov 2025, 11:24 WIB</p>
+                  <p class="mt-1 text-sm/5 text-slate-600">Case has been approved. Final decision: APPROVE.</p>
+                </div>
+                <div class="border-l-2 border-violet-300 pl-4">
+                  <p class="text-sm/5 font-semibold">Case reassigned</p>
+                  <p class="mt-1 text-xs/4 font-medium tabular-nums text-blue-600">Aditya · 25 Nov 2025, 11:05 WIB</p>
+                  <p class="mt-1 text-sm/5 text-slate-600">Case assignee changed from Aditya to Arif.</p>
+                </div>
+              </div>
+            </article>
+          </div>
+        </section>
+
+        <!-- Coverage -->
+        <section id="coverage" class="overflow-hidden rounded-3xl border border-white/10 bg-fds-surface/80 shadow-panel">
+          <div class="p-5 sm:p-6">
+            <p class="text-xs/4 font-semibold uppercase tracking-wider text-fds-accent">Screen coverage</p>
+            <h2 class="mt-2 text-xl/7 font-semibold text-white">Penerapan token pada halaman FDS</h2>
+            <p class="mt-2 text-sm/6 text-slate-400">Tabel ini menunjukkan token yang dominan pada setiap tipe halaman, bukan definisi baru.</p>
+          </div>
+          <div class="overflow-x-auto border-t border-white/10 scrollbar">
+            <table class="min-w-[1080px] w-full text-left">
+              <thead class="bg-black/20">
+                <tr class="text-xs/4 font-semibold uppercase tracking-wider text-slate-400">
+                  <th class="px-5 py-4">Page family</th>
+                  <th class="px-5 py-4">Dominant components</th>
+                  <th class="px-5 py-4">Typography emphasis</th>
+                  <th class="px-5 py-4">Special rule</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-white/10 text-xs/5">
+                <tr>
+                  <td class="px-5 py-4 font-semibold text-white">Transactions / Case Management lists</td>
+                  <td class="px-5 py-4 text-slate-300">Page title, summary metric, filter label, table header, primary/secondary cells, pagination</td>
+                  <td class="px-5 py-4 text-slate-300"><code>text-3xl</code>, <code>text-sm</code>, <code>text-xs</code></td>
+                  <td class="px-5 py-4 text-slate-400">Score, amount, SLA, and timestamps use tabular numbers.</td>
+                </tr>
+                <tr>
+                  <td class="px-5 py-4 font-semibold text-white">Transaction / Case detail</td>
+                  <td class="px-5 py-4 text-slate-300">Entity title, badges, key-value strip, tabs, detail cards, score tables</td>
+                  <td class="px-5 py-4 text-slate-300"><code>text-4xl</code> for entity ID</td>
+                  <td class="px-5 py-4 text-slate-400">Do not shrink IDs to fit; allow responsive wrap on smaller screens.</td>
+                </tr>
+                <tr>
+                  <td class="px-5 py-4 font-semibold text-white">Rule Configuration / Profile Group</td>
+                  <td class="px-5 py-4 text-slate-300">Page title, metadata, tabs, section title, formula, assigned-rule table, scope chips</td>
+                  <td class="px-5 py-4 text-slate-300"><code>text-sm/6</code> for technical formulas</td>
+                  <td class="px-5 py-4 text-slate-400">Keep operators, field names, and numeric thresholds in JetBrains Mono.</td>
+                </tr>
+                <tr>
+                  <td class="px-5 py-4 font-semibold text-white">Approval / Draft workflow</td>
+                  <td class="px-5 py-4 text-slate-300">Section title, description, workflow badge, reviewer table, timestamps</td>
+                  <td class="px-5 py-4 text-slate-300">Weight and colour communicate status</td>
+                  <td class="px-5 py-4 text-slate-400">Status labels remain 12 px across all states.</td>
+                </tr>
+                <tr>
+                  <td class="px-5 py-4 font-semibold text-white">Danger Zone</td>
+                  <td class="px-5 py-4 text-slate-300">Card title, warning body, status badge, destructive button</td>
+                  <td class="px-5 py-4 text-slate-300">Same hierarchy, red semantic colour</td>
+                  <td class="px-5 py-4 text-slate-400">Do not use larger font merely to signal danger.</td>
+                </tr>
+                <tr>
+                  <td class="px-5 py-4 font-semibold text-white">Add Role / Configuration forms</td>
+                  <td class="px-5 py-4 text-slate-300">Compact page title, field label, input value, helper text, table permission matrix</td>
+                  <td class="px-5 py-4 text-slate-300"><code>text-2xl</code>, <code>text-sm</code>, <code>text-xs</code></td>
+                  <td class="px-5 py-4 text-slate-400">Minimum supporting text is 12 px.</td>
+                </tr>
+                <tr>
+                  <td class="px-5 py-4 font-semibold text-white">Activity Log / Audit Log</td>
+                  <td class="px-5 py-4 text-slate-300">Timeline title, actor/time metadata, event description, SLA metrics</td>
+                  <td class="px-5 py-4 text-slate-300">Clear separation between event, metadata, and detail</td>
+                  <td class="px-5 py-4 text-slate-400">Use tabular numbers for duration and time.</td>
+                </tr>
+                <tr>
+                  <td class="px-5 py-4 font-semibold text-white">Reports</td>
+                  <td class="px-5 py-4 text-slate-300">Page title, hero metric, KPI cards, chart titles, legends, report table</td>
+                  <td class="px-5 py-4 text-slate-300"><code>text-4xl</code> only for hero metrics</td>
+                  <td class="px-5 py-4 text-slate-400">Legend and chart metadata stay at 12 px.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- Implementation -->
+        <section id="implementation" class="rounded-3xl border border-white/10 bg-fds-surface/80 p-5 shadow-panel sm:p-6">
+          <div>
+            <p class="text-xs/4 font-semibold uppercase tracking-wider text-fds-accent">Implementation</p>
+            <h2 class="mt-2 text-xl/7 font-semibold text-white">Tailwind setup dan semantic component classes</h2>
+            <p class="mt-2 text-sm/6 text-slate-400">Gunakan utility langsung pada komponen atau rangkum dengan semantic classes menggunakan <code>@apply</code>.</p>
+          </div>
+
+          <div class="mt-6 grid gap-4 xl:grid-cols-2">
+            <div class="overflow-x-auto rounded-2xl border border-white/10 bg-[#050709] p-5 scrollbar">
+              <p class="mb-4 text-xs/4 font-semibold uppercase tracking-wider text-fds-accent">Tailwind theme</p>
+              <pre class="min-w-[620px] text-xs/5 text-slate-300"><code><span class="code-line" data-line="1">@import "tailwindcss";</span>
+<span class="code-line" data-line="2"></span>
+<span class="code-line" data-line="3">@theme {</span>
+<span class="code-line" data-line="4">  --font-fds: "JetBrains Mono", ui-monospace,</span>
+<span class="code-line" data-line="5">    SFMono-Regular, Menlo, Monaco, Consolas, monospace;</span>
+<span class="code-line" data-line="6">}</span>
+<span class="code-line" data-line="7"></span>
+<span class="code-line" data-line="8">.fds-number {</span>
+<span class="code-line" data-line="9">  font-variant-numeric: tabular-nums;</span>
+<span class="code-line" data-line="10">}</span></code></pre>
+            </div>
+
+            <div class="overflow-x-auto rounded-2xl border border-white/10 bg-[#050709] p-5 scrollbar">
+              <p class="mb-4 text-xs/4 font-semibold uppercase tracking-wider text-fds-accent">Semantic classes</p>
+              <pre class="min-w-[620px] text-xs/5 text-slate-300"><code><span class="code-line" data-line="1">@layer components {</span>
+<span class="code-line" data-line="2">  .fds-page-title { @apply text-3xl/9 font-bold; }</span>
+<span class="code-line" data-line="3">  .fds-entity-title { @apply text-4xl/10 font-bold; }</span>
+<span class="code-line" data-line="4">  .fds-section-title { @apply text-xl/7 font-semibold; }</span>
+<span class="code-line" data-line="5">  .fds-card-title { @apply text-lg/7 font-semibold; }</span>
+<span class="code-line" data-line="6">  .fds-body { @apply text-sm/5 font-normal; }</span>
+<span class="code-line" data-line="7">  .fds-control { @apply text-sm/5 font-semibold; }</span>
+<span class="code-line" data-line="8">  .fds-meta { @apply text-xs/5 font-normal; }</span>
+<span class="code-line" data-line="9">  .fds-table-head { @apply text-xs/4 font-semibold uppercase tracking-wide; }</span>
+<span class="code-line" data-line="10">  .fds-badge { @apply text-xs/4 font-semibold uppercase; }</span>
+<span class="code-line" data-line="11">}</span></code></pre>
+            </div>
+          </div>
+
+          <div class="mt-4 rounded-2xl border border-fds-accent/20 bg-fds-accent/5 p-5">
+            <p class="text-sm/5 font-semibold text-fds-accent">Final recommendation</p>
+            <p class="mt-2 text-sm/6 text-slate-300">
+              Gunakan <code class="text-white">text-sm</code> sebagai ukuran utama antarmuka dan
+              <code class="text-white">text-xs</code> sebagai ukuran compact. Ukuran yang lebih besar hanya dipakai untuk hierarchy,
+              entity identifier, dan metrics. Jangan membuat token baru berdasarkan halaman; buat token berdasarkan fungsi komponen.
+            </p>
+          </div>
+        </section>
+
+        <footer class="pb-6 pt-2 text-center text-xs/5 text-slate-500">
+          Fraud Detection System · Unified Typography Documentation · powered by Skyworx
+        </footer>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    // Sidebar preview
+    const preview = document.getElementById('sidebarPreview');
+    const expanded = document.getElementById('sidebarExpanded');
+    const collapsed = document.getElementById('sidebarCollapsed');
+
+    function setSidebarState(isCollapsed) {
+      preview.classList.toggle('is-collapsed', isCollapsed);
+      expanded.classList.toggle('active', !isCollapsed);
+      collapsed.classList.toggle('active', isCollapsed);
+    }
+
+    expanded.addEventListener('click', () => setSidebarState(false));
+    collapsed.addEventListener('click', () => setSidebarState(true));
+
+    // Component search
+    const searchInput = document.getElementById('componentSearch');
+    const rows = [...document.querySelectorAll('.component-row')];
+
+    searchInput.addEventListener('input', (event) => {
+      const query = event.target.value.trim().toLowerCase();
+      rows.forEach((row) => {
+        const haystack = (row.dataset.search + ' ' + row.textContent).toLowerCase();
+        row.hidden = query && !haystack.includes(query);
+      });
+    });
+
+    // Active documentation navigation
+    const sections = [...document.querySelectorAll('section[id]')];
+    const navLinks = [...document.querySelectorAll('.nav-link')];
+
+    const observer = new IntersectionObserver((entries) => {
+      const visible = entries
+        .filter(entry => entry.isIntersecting)
+        .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+
+      if (!visible) return;
+      navLinks.forEach(link => {
+        link.classList.toggle('active', link.getAttribute('href') === '#' + visible.target.id);
+      });
+    }, { rootMargin: '-20% 0px -70% 0px', threshold: [0, .1, .25, .5] });
+
+    sections.forEach(section => observer.observe(section));
+
+    document.querySelectorAll('a[href="#"]').forEach(link => {
+      link.addEventListener('click', event => event.preventDefault());
+    });
+  </script>
+</body>
+</html>
